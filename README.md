@@ -6,7 +6,7 @@
 
 ## Apa itu SCIE?
 
-**Social Intelligence Engine (SCIE)** adalah platform analisis media digital yang mengubah data tidak terstruktur dari media sosial, berita, forum, dan sumber digital lainnya menjadi **actionable intelligence** — pengetahuan yang dapat dianalisis dan digunakan sebagai dasar pengambilan keputusan.
+**Social Intelligence Engine (SCIE)** adalah platform analisis media digital yang mengubah data tidak terstruktur dari media sosial, berita, forum, dan sumber digital lainnya menjadi **actionable intelligence** pengetahuan yang dapat dianalisis dan digunakan sebagai dasar pengambilan keputusan.
 
 Platform ini bukan sekadar *social listening tool*. SCIE adalah sebuah **Intelligence Platform** yang memahami hubungan di balik jutaan percakapan digital.
 
