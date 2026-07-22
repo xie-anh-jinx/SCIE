@@ -117,6 +117,11 @@ worker-nlp:
 worker-graph:
 	@PYTHONPATH=/home/kotaromiyabi/SCIE/apps/graph-service /home/kotaromiyabi/.local/bin/poetry --directory /home/kotaromiyabi/SCIE/apps/api run python /home/kotaromiyabi/SCIE/apps/graph-service/worker.py
 
+## upload-hf: Upload local data/dataset to Hugging Face Bucket
+upload-hf:
+	@PYTHONPATH=/home/kotaromiyabi/SCIE /home/kotaromiyabi/.local/bin/poetry --directory /home/kotaromiyabi/SCIE/apps/api run python /home/kotaromiyabi/SCIE/upload_to_hf.py
+
+
 
 
 
