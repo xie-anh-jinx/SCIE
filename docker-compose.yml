@@ -81,9 +81,10 @@ services:
       --maxmemory 512mb
       --maxmemory-policy allkeys-lru
     ports:
-      - "6379:6379"
+      - "6381:6379"
     volumes:
       - redis_data:/data
+
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -176,7 +177,7 @@ services:
     networks:
       - scie-network
 
-  # ─── Ollama (Self-hosted Llama) ─────────────────────────────────────────────
+  # ─── Ollama (Optional Container - Host Ollama on 11434 is used by default) ──
   ollama:
     image: ollama/ollama:latest
     container_name: scie-ollama
@@ -185,17 +186,8 @@ services:
       - "11435:11434"
     volumes:
       - ollama_data:/root/.ollama
-
     environment:
       - OLLAMA_HOST=0.0.0.0
-    # Uncomment for GPU support (NVIDIA):
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
     healthcheck:
       test: ["CMD-SHELL", "curl -s http://localhost:11434/api/tags > /dev/null || exit 1"]
       interval: 15s
@@ -203,8 +195,10 @@ services:
       retries: 10
     networks:
       - scie-network
+    profiles:
+      - ollama
 
-  # Ollama model pull on startup
+  # Ollama model pull on startup (optional profile)
   ollama-init:
     image: ollama/ollama:latest
     container_name: scie-ollama-init
@@ -213,16 +207,17 @@ services:
         condition: service_healthy
     entrypoint: >
       /bin/sh -c "
-      echo 'Pulling Llama3.1:8b (this may take a while on first run)...';
+      echo 'Pulling Llama3.1:8b...';
       ollama pull llama3.1:8b;
-      echo 'Pulling nomic-embed-text for embeddings...';
-      ollama pull nomic-embed-text;
       echo 'Models ready.';
       "
     environment:
       - OLLAMA_HOST=http://ollama:11434
     networks:
       - scie-network
+    profiles:
+      - ollama
+
 
   # ─── Redis Commander (Dev UI) ───────────────────────────────────────────────
   redis-commander:
