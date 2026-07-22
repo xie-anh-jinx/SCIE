@@ -11,8 +11,9 @@ from connectors.twitter import fetch_twitter_posts
 from pipeline.producer import RedisStreamProducer
 
 log = structlog.get_logger()
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6381/0")
 STREAM_RAW = os.getenv("REDIS_STREAM_RAW_POSTS", "stream:raw_posts")
+
 
 
 async def run_rss_job(producer: RedisStreamProducer):

@@ -15,10 +15,11 @@ from pipeline import enrich_post
 
 log = structlog.get_logger()
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6381/0")
 STREAM_RAW = os.getenv("REDIS_STREAM_RAW_POSTS", "stream:raw_posts")
 STREAM_ENRICHED = os.getenv("REDIS_STREAM_ENRICHED_POSTS", "stream:enriched_posts")
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://scie:scie_secret_password@localhost:5432/scie")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://scie:scie_secret_password@127.0.0.1:5436/scie")
+
 CONSUMER_GROUP = "nlp_workers_group"
 CONSUMER_NAME = f"worker_{os.getpid()}"
 

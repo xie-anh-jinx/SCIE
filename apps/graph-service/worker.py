@@ -11,8 +11,9 @@ from ingesters.neo4j_ingester import Neo4jGraphIngester
 
 log = structlog.get_logger()
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6381/0")
 STREAM_ENRICHED = os.getenv("REDIS_STREAM_ENRICHED_POSTS", "stream:enriched_posts")
+
 NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
 NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "scie_neo4j_password")
