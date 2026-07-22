@@ -83,6 +83,8 @@ pull-models:
 	docker compose exec ollama ollama pull nomic-embed-text
 	@echo "$(GREEN)✓ Models ready.$(RESET)"
 
+SHELL := /bin/bash
+
 # ─── Development ──────────────────────────────────────────────────────────────
 
 ## dev: Start all development servers (API + Frontend)
@@ -92,13 +94,12 @@ dev:
 
 ## dev-api: Start FastAPI development server
 dev-api:
-	@cd apps/api && \
-		source .venv/bin/activate && \
-		uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app
+	@cd apps/api && /home/kotaromiyabi/.local/bin/poetry run uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app
 
 ## dev-frontend: Start Next.js development server
 dev-frontend:
-	@cd apps/frontend && pnpm dev
+	@cd apps/frontend && npm run dev
+
 
 # ─── Installation ─────────────────────────────────────────────────────────────
 
