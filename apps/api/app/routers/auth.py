@@ -102,7 +102,7 @@ async def login(
 
     # Store refresh token hash
     token_hash = hashlib.sha256(refresh_token.encode()).hexdigest()
-    expires_at = datetime.now(UTC) + timedelta(days=settings.jwt_refresh_token_expire_days)
+    expires_at = datetime.now(UTC).replace(tzinfo=None) + timedelta(days=settings.jwt_refresh_token_expire_days)
 
     db.add(RefreshToken(
         user_id=user.id,
@@ -113,8 +113,9 @@ async def login(
     ))
 
     # Update last login
-    user.last_login = datetime.now(UTC)
+    user.last_login = datetime.now(UTC).replace(tzinfo=None)
     await db.commit()
+
 
     log.info("User logged in", user_id=user.id)
     return {
