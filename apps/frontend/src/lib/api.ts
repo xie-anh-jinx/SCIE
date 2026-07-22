@@ -293,7 +293,46 @@ export const chatApi = {
   },
 };
 
+// ─── Alerts API ──────────────────────────────────────────────────────────────
+
+export interface AlertItem {
+  id: string;
+  type: string;
+  severity: 'HIGH' | 'MEDIUM' | 'INFO';
+  title: string;
+  description: string;
+  created_at: string;
+  status: string;
+}
+
+export const alertsApi = {
+  list: async (): Promise<{ alerts: AlertItem[]; total_active: number }> => {
+    const res = await api.get<{ alerts: AlertItem[]; total_active: number }>('/alerts');
+    return res.data;
+  },
+};
+
+// ─── Reports API ─────────────────────────────────────────────────────────────
+
+export interface ExecutiveReportData {
+  title: string;
+  generated_at: string;
+  author: string;
+  total_posts: number;
+  sentiment_stats: { positive: number; neutral: number; negative: number };
+  executive_narrative: string;
+}
+
+export const reportsApi = {
+  getSummary: async (): Promise<ExecutiveReportData> => {
+    const res = await api.get<ExecutiveReportData>('/reports/summary');
+    return res.data;
+  },
+};
+
 export default api;
+
+
 
 
 

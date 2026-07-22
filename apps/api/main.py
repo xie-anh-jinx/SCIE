@@ -9,7 +9,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 
 from app.core.config import get_settings
 from app.core.database import close_redis, close_neo4j, verify_connections
-from app.routers import analytics, auth, chat, graph, health, posts, sources
+from app.routers import alerts, analytics, auth, chat, graph, health, posts, reports, sources
 
 log = structlog.get_logger()
 settings = get_settings()
@@ -68,6 +68,9 @@ app.include_router(posts.router, prefix="/api/v1")
 app.include_router(graph.router, prefix="/api/v1")
 app.include_router(analytics.router, prefix="/api/v1")
 app.include_router(chat.router, prefix="/api/v1")
+app.include_router(alerts.router, prefix="/api/v1")
+app.include_router(reports.router, prefix="/api/v1")
+
 
 
 
