@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
+import { parseApiError } from '@/lib/errors';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -31,9 +32,8 @@ export default function RegisterPage() {
       await register(form.email, form.username, form.password, form.fullName);
       setSuccess('Akun berhasil dibuat! Mengarahkan ke halaman login...');
       setTimeout(() => router.push('/login'), 2000);
-    } catch (err: any) {
-      const detail = err?.response?.data?.detail;
-      setError(typeof detail === 'string' ? detail : 'Registrasi gagal. Coba lagi.');
+    } catch (err: unknown) {
+      setError(parseApiError(err, 'Registrasi gagal. Coba lagi.'));
     } finally {
       setIsLoading(false);
     }

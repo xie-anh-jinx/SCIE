@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
+import { parseApiError } from '@/lib/errors';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -20,8 +21,8 @@ export default function LoginPage() {
     try {
       await login(email, password);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err?.response?.data?.detail || 'Email atau password salah');
+    } catch (err: unknown) {
+      setError(parseApiError(err, 'Email atau password salah'));
     } finally {
       setIsLoading(false);
     }

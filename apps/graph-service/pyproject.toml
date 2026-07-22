@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "scie-graph-service"
+version = "0.1.0"
+description = "SCIE — Knowledge Graph & Analytics Service"
+authors = ["SCIE Team"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+neo4j = "^5.20.0"
+redis = {extras = ["hiredis"], version = "^5.0.4"}
+pydantic = "^2.7.0"
+pydantic-settings = "^2.2.1"
+structlog = "^24.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

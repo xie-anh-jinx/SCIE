@@ -148,4 +148,153 @@ export const healthApi = {
   },
 };
 
+// ─── Posts API ────────────────────────────────────────────────────────────────
+
+export interface Post {
+  id: string;
+  platform: string;
+  platform_id: string;
+  type: string;
+  text: string | null;
+  text_cleaned: string | null;
+  language: string | null;
+  url: string | null;
+  timestamp: string | null;
+  likes: number;
+  comments: number;
+  shares: number;
+  views: number;
+  sentiment_label: string | null;
+  sentiment_score: number | null;
+  topics: string[];
+  keywords: string[];
+  virality_score: number;
+  collected_at: string;
+}
+
+export interface PostStats {
+  total_posts: number;
+  platform_breakdown: Record<string, number>;
+  sentiment_breakdown: Record<string, number>;
+  top_topics: Array<{ topic: string; count: number }>;
+  top_keywords: Array<{ keyword: string; count: number }>;
+}
+
+export const postsApi = {
+  list: async (params?: {
+    platform?: string;
+    sentiment?: string;
+    topic?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }) => {
+    const res = await api.get<{ items: Post[]; total: number; page: number; pages: number }>('/posts', { params });
+    return res.data;
+  },
+
+  getStats: async (): Promise<PostStats> => {
+    const res = await api.get<PostStats>('/posts/stats');
+    return res.data;
+  },
+};
+
+// ─── Sources API ──────────────────────────────────────────────────────────────
+
+export interface DataSource {
+  id: string;
+  name: string;
+  platform: string;
+  config: Record<string, any>;
+  keywords: string[];
+  is_active: boolean;
+  last_run_at: string | null;
+  posts_collected: number;
+  status: string;
+  created_at: string;
+}
+
+// ─── Knowledge Graph API ──────────────────────────────────────────────────────
+
+export interface GraphNode {
+  id: string;
+  label: string;
+  type: 'User' | 'Post' | 'Topic' | 'Entity';
+  color: string;
+  size: number;
+}
+
+export interface GraphEdge {
+  id: string;
+  source: string;
+  target: string;
+  label: string;
+}
+
+export interface GraphData {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+  total_nodes: number;
+  total_edges: number;
+}
+
+export const graphApi = {
+  get: async (limit: number = 50): Promise<GraphData> => {
+    const res = await api.get<GraphData>('/graph', { params: { limit } });
+    return res.data;
+  },
+};
+
+// ─── Analytics API ────────────────────────────────────────────────────────────
+
+export interface TrendItem {
+  topic: string;
+  volume: number;
+  trend_score: number;
+  avg_sentiment: number;
+  status: string;
+}
+
+export interface InfluencerItem {
+  id: string;
+  platform: string;
+  username: string;
+  display_name: string;
+  follower_count: number;
+  influence_score: number;
+  community_id: string;
+}
+
+export const analyticsApi = {
+  getTrends: async (): Promise<{ trends: TrendItem[] }> => {
+    const res = await api.get<{ trends: TrendItem[] }>('/analytics/trends');
+    return res.data;
+  },
+
+  getInfluencers: async (): Promise<{ influencers: InfluencerItem[] }> => {
+    const res = await api.get<{ influencers: InfluencerItem[] }>('/analytics/influencers');
+    return res.data;
+  },
+};
+
+// ─── AI Chat API ──────────────────────────────────────────────────────────────
+
+export interface ChatResponseData {
+  answer: string;
+  model: string;
+  sources_count: number;
+  context_used: Array<{ platform: string; text: string; sentiment: string; topics: string[] }>;
+}
+
+export const chatApi = {
+  ask: async (prompt: string): Promise<ChatResponseData> => {
+    const res = await api.post<ChatResponseData>('/chat', { prompt });
+    return res.data;
+  },
+};
+
 export default api;
+
+
+
+

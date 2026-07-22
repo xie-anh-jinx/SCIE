@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "scie-ingestion"
+version = "0.1.0"
+description = "SCIE — Data Ingestion Service"
+authors = ["SCIE Team"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+redis = {extras = ["hiredis"], version = "^5.0.4"}
+httpx = "^0.27.0"
+feedparser = "^6.0.11"
+pydantic = "^2.7.0"
+pydantic-settings = "^2.2.1"
+structlog = "^24.1.0"
+beautifulsoup4 = "^4.12.3"
+apscheduler = "^3.10.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

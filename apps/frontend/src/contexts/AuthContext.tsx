@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       authApi
         .getMe()
         .then(setUser)
-        .catch(() => {
+        .catch((_err: unknown) => {
           clearTokens();
           setUser(null);
         })
