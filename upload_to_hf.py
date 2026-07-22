@@ -27,16 +27,27 @@ def main():
     if not os.path.exists(data_dir):
         os.makedirs(data_dir, exist_ok=True)
 
-    print(f"Mengunggah seluruh file dari {data_dir} ke hf://buckets/Kotarominami/SCIE ...")
+    repo_id = "Kotarominami/SCIE"
+
+    print(f"1. Memastikan repositori {repo_id} tersedia di Hugging Face...")
+    try:
+        api.create_repo(repo_id=repo_id, repo_type="dataset", private=True, exist_ok=True)
+        print(f"✓ Repositori dataset {repo_id} siap.")
+    except Exception as e:
+        print(f"Catatan repositori: {e}")
+
+    print(f"2. Mengunggah berkas dataset dari {data_dir} ke Hugging Face...")
     try:
         api.upload_folder(
             folder_path=data_dir,
-            repo_id="Kotarominami/SCIE",
-            repo_type="dataset", # Or bucket storage
+            repo_id=repo_id,
+            repo_type="dataset",
         )
-        print("✅ BERHASIL MENGUNGGAH KE HUGGING FACE BUCKET!")
+        print("✅ BERHASIL MENGUNGGAH SELURUH DATASET KE HUGGING FACE!")
+        print(f"🔗 Akses dataset Anda di: https://huggingface.co/datasets/{repo_id}")
     except Exception as e:
-        print(f" Gagal mengunggah: {e}")
+        print(f"❌ Gagal mengunggah: {e}")
+
 
 if __name__ == "__main__":
     main()
