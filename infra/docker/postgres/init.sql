@@ -248,7 +248,7 @@ INSERT INTO users (id, organization_id, email, username, hashed_password, full_n
 VALUES (
     '00000000-0000-0000-0000-000000000002',
     '00000000-0000-0000-0000-000000000001',
-    'admin@scie.local',
+    'admin@scie.com',
     'admin',
     '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewjwC8qQ5Hv.QeGy', -- admin123
     'SCIE Administrator',
@@ -257,5 +257,6 @@ VALUES (
     TRUE
 )
 ON CONFLICT DO NOTHING;
+
 
 RAISE NOTICE 'SCIE database initialized successfully!';

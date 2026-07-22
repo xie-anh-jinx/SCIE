@@ -107,15 +107,16 @@ workers:
 
 ## worker-ingestion: Start Data Ingestion Runner
 worker-ingestion:
-	@PYTHONPATH=apps/ingestion /home/kotaromiyabi/.local/bin/poetry --directory apps/api run python apps/ingestion/main.py
+	@PYTHONPATH=/home/kotaromiyabi/SCIE/apps/ingestion /home/kotaromiyabi/.local/bin/poetry --directory /home/kotaromiyabi/SCIE/apps/api run python /home/kotaromiyabi/SCIE/apps/ingestion/main.py
 
 ## worker-nlp: Start NLP Worker Consumer
 worker-nlp:
-	@PYTHONPATH=apps/nlp-worker /home/kotaromiyabi/.local/bin/poetry --directory apps/api run python apps/nlp-worker/worker.py
+	@PYTHONPATH=/home/kotaromiyabi/SCIE/apps/nlp-worker /home/kotaromiyabi/.local/bin/poetry --directory /home/kotaromiyabi/SCIE/apps/api run python /home/kotaromiyabi/SCIE/apps/nlp-worker/worker.py
 
 ## worker-graph: Start Knowledge Graph Service Consumer
 worker-graph:
-	@PYTHONPATH=apps/graph-service /home/kotaromiyabi/.local/bin/poetry --directory apps/api run python apps/graph-service/worker.py
+	@PYTHONPATH=/home/kotaromiyabi/SCIE/apps/graph-service /home/kotaromiyabi/.local/bin/poetry --directory /home/kotaromiyabi/SCIE/apps/api run python /home/kotaromiyabi/SCIE/apps/graph-service/worker.py
+
 
 
 

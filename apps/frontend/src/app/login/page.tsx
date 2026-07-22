@@ -72,7 +72,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="admin@scie.local"
+                placeholder="admin@scie.com"
                 className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/50 transition-colors text-sm"
               />
             </div>
@@ -116,12 +116,13 @@ export default function LoginPage() {
           <div className="mt-4 pt-4 border-t border-gray-800">
             <button
               type="button"
-              onClick={() => { setEmail('admin@scie.local'); setPassword('admin123'); }}
+              onClick={() => { setEmail('admin@scie.com'); setPassword('admin123'); }}
               className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
             >
-              💡 Gunakan akun default: admin@scie.local / admin123
+              💡 Gunakan akun default: admin@scie.com / admin123
             </button>
           </div>
+
         </div>
       </div>
     </div>
