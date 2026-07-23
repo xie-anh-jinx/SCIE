@@ -9,6 +9,7 @@ export interface LayerConfig {
 }
 
 export const INDONESIA_LAYERS: LayerConfig[] = [
+  { id: 'politik', name: 'Politik & Kebijakan', icon: '🏛️', color: '#8b5cf6', description: 'Pilkada, Pemilu, Kebijakan Daerah, DPRD, & KPU/Bawaslu' },
   { id: 'konflik', name: 'Konflik & Keamanan', icon: '⚔️', color: '#ef4444', description: 'Keamanan Daerah, Terorisme, & Perbatasan' },
   { id: 'hotspot', name: 'Hotspots Disinformasi', icon: '🔥', color: '#f97316', description: 'Isu Viral, Hoaks Media Sosial, & Opini Publik' },
   { id: 'pangkalan', name: 'Pangkalan & Obvitnas', icon: '🛡️', color: '#3b82f6', description: 'Pos TNI/Polri & Objek Vital Nasional' },
@@ -34,10 +35,11 @@ export default function LayerControls({ activeLayers, onToggleLayer, layerCounts
             Situational Layers (Indonesia)
           </span>
         </div>
-        <span className="text-[10px] text-gray-500 font-mono">7 Active Layers</span>
+        <span className="text-[10px] text-gray-500 font-mono">8 Active Layers</span>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-1.5">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-1.5">
+
         {INDONESIA_LAYERS.map((layer) => {
           const isActive = activeLayers.includes(layer.id);
           const count = layerCounts[layer.id] || 0;

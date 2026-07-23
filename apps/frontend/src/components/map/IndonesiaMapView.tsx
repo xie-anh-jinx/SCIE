@@ -10,6 +10,7 @@ interface IndonesiaMapViewProps {
 }
 
 const LAYER_COLORS: Record<string, string> = {
+  politik: '#8b5cf6',
   konflik: '#ef4444',
   hotspot: '#f97316',
   pangkalan: '#3b82f6',
@@ -20,6 +21,7 @@ const LAYER_COLORS: Record<string, string> = {
 };
 
 const LAYER_EMOJIS: Record<string, string> = {
+  politik: '🏛️',
   konflik: '⚔️',
   hotspot: '🔥',
   pangkalan: '🛡️',
@@ -28,6 +30,7 @@ const LAYER_EMOJIS: Record<string, string> = {
   perairan: '🌊',
   bencana: '🌋',
 };
+
 
 export default function IndonesiaMapView({ events, activeLayers, onSelectEvent }: IndonesiaMapViewProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);

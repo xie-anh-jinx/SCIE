@@ -25,8 +25,9 @@ export default function DashboardPage() {
   const [selectedProvince, setSelectedProvince] = useState<string>('Sulawesi Selatan');
   const [days, setDays] = useState<number>(7);
   const [activeLayers, setActiveLayers] = useState<string[]>([
-    'konflik', 'hotspot', 'pangkalan', 'infrastruktur', 'ekonomi', 'perairan', 'bencana'
+    'politik', 'konflik', 'hotspot', 'pangkalan', 'infrastruktur', 'ekonomi', 'perairan', 'bencana'
   ]);
+
   const [events, setEvents] = useState<MapEventItem[]>([]);
   const [summary, setSummary] = useState<MapSummaryData | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<MapEventItem | null>(null);

@@ -157,7 +157,8 @@ def classify_indonesia_layer(text: str, topics: list[str] = None) -> str:
     full_text = (text + " " + " ".join(topics or [])).lower()
 
     if any(k in full_text for k in ["pilkada", "pemilu", "gubernur", "dprd", "politik", "paslon", "kampanye", "kpu", "bawaslu", "partai", "debat", "bupati", "walikota", "pemprov", "pemkot"]):
-        return "konflik"
+        return "politik"
+
     if any(k in full_text for k in ["gempa", "bmkg", "banjir", "erupsi", "tsunami", "gunung", "karhutla", "longsor", "cuaca"]):
         return "bencana"
     if any(k in full_text for k in ["selat", "perairan", "natuna", "kapal", "laut", "maritim", "nelayan", "ikan"]):
