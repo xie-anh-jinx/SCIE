@@ -10,6 +10,8 @@ interface IntelTickerProps {
 export default function IntelTicker({ events, onSelectEvent }: IntelTickerProps) {
   const getBadgeStyle = (layer: string) => {
     switch (layer) {
+      case 'politik':
+        return 'bg-violet-500/20 text-violet-300 border-violet-500/30 font-bold';
       case 'konflik':
         return 'bg-red-500/20 text-red-400 border-red-500/30';
       case 'hotspot':
@@ -28,6 +30,7 @@ export default function IntelTicker({ events, onSelectEvent }: IntelTickerProps)
         return 'bg-gray-800 text-gray-400 border-gray-700';
     }
   };
+
 
   return (
     <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex flex-col h-full">
