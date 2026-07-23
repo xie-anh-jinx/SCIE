@@ -68,14 +68,16 @@ async def save_to_database(db: AsyncSession, enriched: dict):
         sa_text(
             "INSERT INTO posts (id, platform, platform_id, type, text, text_cleaned, url, author_id, "
             "timestamp, likes, comments, shares, views, sentiment_label, sentiment_score, topics, keywords, "
-            "virality_score, collected_at, processed_at) "
+            "virality_score, latitude, longitude, location_name, province, layer_category, collected_at, processed_at) "
             "VALUES (:id, :platform, :platform_id, :type, :text, :text_cleaned, :url, :author_id, "
             "NOW(), :likes, :comments, :shares, :views, :sentiment_label, :sentiment_score, :topics, :keywords, "
-            ":virality_score, NOW(), NOW()) "
+            ":virality_score, :latitude, :longitude, :location_name, :province, :layer_category, NOW(), NOW()) "
             "ON CONFLICT (platform, platform_id) DO UPDATE SET "
             "likes = EXCLUDED.likes, comments = EXCLUDED.comments, shares = EXCLUDED.shares, "
             "sentiment_label = EXCLUDED.sentiment_label, sentiment_score = EXCLUDED.sentiment_score, "
             "topics = EXCLUDED.topics, keywords = EXCLUDED.keywords, virality_score = EXCLUDED.virality_score, "
+            "latitude = EXCLUDED.latitude, longitude = EXCLUDED.longitude, location_name = EXCLUDED.location_name, "
+            "province = EXCLUDED.province, layer_category = EXCLUDED.layer_category, "
             "processed_at = NOW()"
         ).params(
             id=post_id,
@@ -95,8 +97,14 @@ async def save_to_database(db: AsyncSession, enriched: dict):
             topics=enriched.get("topics", []),
             keywords=enriched.get("keywords", []),
             virality_score=enriched.get("virality_score", 0.0),
+            latitude=enriched.get("latitude"),
+            longitude=enriched.get("longitude"),
+            location_name=enriched.get("location_name"),
+            province=enriched.get("province"),
+            layer_category=enriched.get("layer_category", "hotspot"),
         )
     )
+
 
     # 3. Upsert Entities & Link
     entities = enriched.get("entities", [])

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "scie_post_001",
+    "platform": "rss",
+    "source": "Antara News",
+    "text": "Prabowo tegaskan komitmen kedaulatan digital dan pemanfaatan AI untuk kecerdasan sosial bangsa.",
+    "sentiment_score": 0.85,
+    "sentiment_label": "positive",
+    "topics": [
+      "AI",
+      "Kedaulatan Digital",
+      "Pemerintahan"
+    ],
+    "entities": [
+      "Prabowo"
+    ],
+    "published_at": "2026-07-22T10:00:00Z"
+  },
+  {
+    "id": "scie_post_002",
+    "platform": "rss",
+    "source": "CNBC Indonesia",
+    "text": "Pertumbuhan ekonomi digital Indonesia diproyeksi mencapai lonjakan signifikan pada kuartal III 2026.",
+    "sentiment_score": 0.9,
+    "sentiment_label": "positive",
+    "topics": [
+      "Ekonomi Digital",
+      "Investasi"
+    ],
+    "entities": [
+      "Indonesia"
+    ],
+    "published_at": "2026-07-22T11:30:00Z"
+  },
+  {
+    "id": "scie_post_003",
+    "platform": "twitter",
+    "source": "X/Twitter Demo",
+    "text": "Waspada hoaks dan penyebaran disinformasi berbasis deepfake menjelang pemilihan lokal.",
+    "sentiment_score": -0.75,
+    "sentiment_label": "negative",
+    "topics": [
+      "Disinformasi",
+      "Siber",
+      "Keamanan"
+    ],
+    "entities": [
+      "Deepfake"
+    ],
+    "published_at": "2026-07-22T12:15:00Z"
+  }
+]

@@ -1,8 +1,7 @@
 """
 NLP Pipeline — Orchestrates clean_text, analyze_sentiment, extract_entities, and classify_topics.
 """
-from typing import Any
-
+from processors.geocoder import classify_indonesia_layer, geocode_indonesia_text
 from processors.ner import extract_entities
 from processors.sentiment import analyze_sentiment
 from processors.text_cleaner import clean_text
@@ -21,6 +20,10 @@ def enrich_post(raw_post: dict[str, Any]) -> dict[str, Any]:
     topics = classify_topics(cleaned)
     keywords = extract_keywords(cleaned)
 
+    # Perform Indonesia Geocoding & Layer Classification
+    lat, lon, loc_name, province = geocode_indonesia_text(raw_text, entities)
+    layer_cat = classify_indonesia_layer(raw_text, topics)
+
     # Calculate basic virality score estimate based on engagement
     metrics = raw_post.get("metrics", {})
     likes = metrics.get("likes", 0)
@@ -38,6 +41,12 @@ def enrich_post(raw_post: dict[str, Any]) -> dict[str, Any]:
         "topics": topics,
         "keywords": keywords,
         "virality_score": virality_score,
+        "latitude": lat,
+        "longitude": lon,
+        "location_name": loc_name,
+        "province": province,
+        "layer_category": layer_cat,
         "processed_at": raw_post.get("timestamp"),
     }
     return enriched
+

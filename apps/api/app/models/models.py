@@ -173,10 +173,16 @@ class Post(Base):
     keywords: Mapped[list[str]] = mapped_column(ARRAY(String), default=[])
     summary: Mapped[str | None] = mapped_column(Text, nullable=True)
     virality_score: Mapped[float] = mapped_column(Float, default=0.0)
+    latitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    longitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    location_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    province: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    layer_category: Mapped[str | None] = mapped_column(String(50), default="hotspot")
     is_original: Mapped[bool] = mapped_column(Boolean, default=True)
     is_deleted: Mapped[bool] = mapped_column(Boolean, default=False)
     collected_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
 
 
 # ─── Data Source ──────────────────────────────────────────────────────────────

@@ -330,7 +330,49 @@ export const reportsApi = {
   },
 };
 
+// ─── Geospatial Map API ──────────────────────────────────────────────────────
+
+
+export interface MapEventItem {
+  id: string;
+  title: string;
+  full_text?: string;
+  platform: string;
+  latitude: number;
+  longitude: number;
+  location_name: string;
+  province: string;
+  layer_category: 'konflik' | 'hotspot' | 'pangkalan' | 'infrastruktur' | 'ekonomi' | 'perairan' | 'bencana';
+  sentiment_label: string;
+  sentiment_score: number;
+  virality_score: number;
+  topics: string[];
+  url?: string;
+  timestamp?: string;
+}
+
+export interface MapSummaryData {
+  region: string;
+  layers: Record<string, number>;
+  top_provinces: Array<{ province: string; count: number }>;
+}
+
+export const mapApi = {
+  getEvents: async (layers?: string, province?: string, limit: number = 250): Promise<{ total_events: number; events: MapEventItem[] }> => {
+    const params: Record<string, any> = { limit };
+    if (layers) params.layers = layers;
+    if (province) params.province = province;
+    const res = await api.get<{ total_events: number; events: MapEventItem[] }>('/map/events', { params });
+    return res.data;
+  },
+  getSummary: async (): Promise<MapSummaryData> => {
+    const res = await api.get<MapSummaryData>('/map/summary');
+    return res.data;
+  },
+};
+
 export default api;
+
 
 
 
