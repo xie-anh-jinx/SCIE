@@ -235,7 +235,7 @@ export const sourcesApi = {
 export interface GraphNode {
   id: string;
   label: string;
-  type: 'User' | 'Post' | 'Topic' | 'Entity';
+  type: 'User' | 'Post' | 'Topic' | 'Entity' | 'Actor' | 'Party' | 'Institution' | 'Narrative';
   color: string;
   size: number;
 }
@@ -254,12 +254,26 @@ export interface GraphData {
   total_edges: number;
 }
 
+export interface PoliticalClusterItem {
+  id: string;
+  name: string;
+  dominant_actors: string[];
+  share_percentage: number;
+  sentiment: string;
+  key_issues: string[];
+}
+
 export const graphApi = {
-  get: async (limit: number = 50): Promise<GraphData> => {
-    const res = await api.get<GraphData>('/graph', { params: { limit } });
+  get: async (view: 'general' | 'political' = 'general', limit: number = 60): Promise<GraphData> => {
+    const res = await api.get<GraphData>('/graph', { params: { view, limit } });
+    return res.data;
+  },
+  getClusters: async (): Promise<{ region: string; total_clusters: number; clusters: PoliticalClusterItem[] }> => {
+    const res = await api.get<{ region: string; total_clusters: number; clusters: PoliticalClusterItem[] }>('/graph/clusters');
     return res.data;
   },
 };
+
 
 // ─── Analytics API ────────────────────────────────────────────────────────────
 
