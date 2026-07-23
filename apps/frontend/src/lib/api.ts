@@ -334,17 +334,34 @@ export interface ExecutiveReportData {
   title: string;
   generated_at: string;
   author: string;
+  province?: string;
   total_posts: number;
   sentiment_stats: { positive: number; neutral: number; negative: number };
+  layer_distribution?: Record<string, number>;
   executive_narrative: string;
 }
 
+export interface AIReportResponse {
+  title: string;
+  generated_at: string;
+  province: string;
+  model_used: string;
+  total_sources_analyzed: number;
+  ai_report_narrative: string;
+}
+
 export const reportsApi = {
-  getSummary: async (): Promise<ExecutiveReportData> => {
-    const res = await api.get<ExecutiveReportData>('/reports/summary');
+  getSummary: async (province: string = 'Sulawesi Selatan'): Promise<ExecutiveReportData> => {
+    const res = await api.get<ExecutiveReportData>('/reports/summary', { params: { province } });
+    return res.data;
+  },
+
+  generateAiBriefing: async (province: string = 'Sulawesi Selatan'): Promise<AIReportResponse> => {
+    const res = await api.post<AIReportResponse>('/reports/generate', null, { params: { province } });
     return res.data;
   },
 };
+
 
 // ─── Geospatial Map API ──────────────────────────────────────────────────────
 
