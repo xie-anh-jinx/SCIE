@@ -22,6 +22,7 @@ export default function DashboardPage() {
   const { user, logout, isLoading } = useAuth();
   const router = useRouter();
 
+  const [selectedProvince, setSelectedProvince] = useState<string>('Sulawesi Selatan');
   const [activeLayers, setActiveLayers] = useState<string[]>([
     'konflik', 'hotspot', 'pangkalan', 'infrastruktur', 'ekonomi', 'perairan', 'bencana'
   ]);
@@ -38,15 +39,15 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (user) {
-      fetchMapData();
+      fetchMapData(selectedProvince);
     }
-  }, [user]);
+  }, [user, selectedProvince]);
 
-  const fetchMapData = async () => {
+  const fetchMapData = async (prov?: string) => {
     setLoading(true);
     try {
       const [eventsRes, summaryRes] = await Promise.all([
-        mapApi.getEvents(),
+        mapApi.getEvents(undefined, prov || undefined),
         mapApi.getSummary(),
       ]);
       setEvents(eventsRes.events || []);
@@ -57,6 +58,7 @@ export default function DashboardPage() {
       setLoading(false);
     }
   };
+
 
   const handleToggleLayer = (layerId: string) => {
     if (activeLayers.includes(layerId)) {
@@ -139,14 +141,30 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <select
+              value={selectedProvince}
+              onChange={(e) => setSelectedProvince(e.target.value)}
+              className="px-3 py-1.5 bg-gray-800 border border-gray-700 text-white rounded-lg text-xs font-semibold focus:outline-none focus:border-violet-500 cursor-pointer"
+            >
+              <option value="Sulawesi Selatan">📍 Fokus: Sulawesi Selatan</option>
+              <option value="">🇮🇩 Seluruh Indonesia (38 Provinsi)</option>
+              <option value="DKI Jakarta">📍 DKI Jakarta</option>
+              <option value="Jawa Barat">📍 Jawa Barat</option>
+              <option value="Jawa Timur">📍 Jawa Timur</option>
+              <option value="Aceh">📍 Aceh</option>
+              <option value="Papua">📍 Papua</option>
+              <option value="Kalimantan Timur">📍 Kalimantan Timur (IKN)</option>
+            </select>
+
             <button
-              onClick={fetchMapData}
+              onClick={() => fetchMapData(selectedProvince)}
               className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg text-xs font-medium transition-colors border border-gray-700 flex items-center gap-1.5"
             >
               🔄 Refresh Feeds
             </button>
           </div>
         </header>
+
 
         {/* Workspace Area */}
         <div className="flex-1 p-6 flex flex-col gap-4 overflow-y-auto">

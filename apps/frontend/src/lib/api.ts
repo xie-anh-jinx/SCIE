@@ -211,8 +211,24 @@ export interface DataSource {
   last_run_at: string | null;
   posts_collected: number;
   status: string;
-  created_at: string;
 }
+
+export const sourcesApi = {
+
+  list: async (): Promise<DataSource[]> => {
+    const res = await api.get<DataSource[]>('/sources');
+    return res.data;
+  },
+  create: async (data: Partial<DataSource>): Promise<DataSource> => {
+    const res = await api.post<DataSource>('/sources', data);
+    return res.data;
+  },
+  toggle: async (id: string, is_active: boolean): Promise<DataSource> => {
+    const res = await api.patch<DataSource>(`/sources/${id}`, { is_active });
+    return res.data;
+  },
+};
+
 
 // ─── Knowledge Graph API ──────────────────────────────────────────────────────
 

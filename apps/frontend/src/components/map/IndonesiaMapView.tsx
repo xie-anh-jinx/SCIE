@@ -51,12 +51,13 @@ export default function IndonesiaMapView({ events, activeLayers, onSelectEvent }
       }
 
       if (!mapInstanceRef.current && mapContainerRef.current) {
-        // Center on Indonesia (Lat: -2.5489, Lon: 118.0149, Zoom: 5)
+        // Center on South Sulawesi / Makassar (Lat: -5.1477, Lon: 119.4327, Zoom: 8)
         const map = L.map(mapContainerRef.current, {
-          center: [-2.5489, 118.0149],
-          zoom: 5,
+          center: [-5.1477, 119.4327],
+          zoom: 8,
           minZoom: 4,
-          maxZoom: 14,
+          maxZoom: 15,
+
           maxBounds: [
             [-13.0, 92.0], // South-West bound
             [9.0, 142.0],  // North-East bound
@@ -146,10 +147,12 @@ export default function IndonesiaMapView({ events, activeLayers, onSelectEvent }
       <div ref={mapContainerRef} className="w-full h-full min-h-[480px] z-10" />
 
       {/* Region Indicator Overlay */}
-      <div className="absolute top-4 right-4 z-20 bg-gray-900/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-gray-800 flex items-center gap-2 pointer-events-none">
-        <span className="text-[11px] font-bold text-white tracking-wide">🇮🇩 INDONESIA COMMAND CENTER</span>
-        <span className="text-[10px] text-gray-400 font-mono">38 PROVINSI</span>
+      <div className="absolute top-4 right-4 z-20 bg-gray-900/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-gray-800 flex items-center gap-2 pointer-events-none shadow-xl">
+        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+        <span className="text-[11px] font-bold text-white tracking-wide">📍 FOKUS: SULAWESI SELATAN</span>
+        <span className="text-[10px] text-gray-400 font-mono">MAKASSAR & DAERAH</span>
       </div>
     </div>
   );
 }
+
