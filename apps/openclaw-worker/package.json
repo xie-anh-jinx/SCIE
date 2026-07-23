@@ -1,0 +1,21 @@
+{
+  "name": "openclaw-worker",
+  "version": "1.0.0",
+  "description": "SCIE OpenClaw Headless Scraper Worker for Facebook, Instagram, and TikTok (South Sulawesi Focus)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ioredis": "^5.4.2",
+    "playwright": "^1.50.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

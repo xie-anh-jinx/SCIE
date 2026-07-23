@@ -117,9 +117,14 @@ worker-nlp:
 worker-graph:
 	@PYTHONPATH=/home/kotaromiyabi/SCIE/apps/graph-service /home/kotaromiyabi/.local/bin/poetry --directory /home/kotaromiyabi/SCIE/apps/api run python /home/kotaromiyabi/SCIE/apps/graph-service/worker.py
 
+## worker-openclaw: Start OpenClaw Headless Scraper Worker (FB / IG / TikTok - Sulsel)
+worker-openclaw:
+	@cd /home/kotaromiyabi/SCIE/apps/openclaw-worker && npm run dev
+
 ## upload-hf: Upload local data/dataset to Hugging Face Bucket
 upload-hf:
 	@PYTHONPATH=/home/kotaromiyabi/SCIE /home/kotaromiyabi/.local/bin/poetry --directory /home/kotaromiyabi/SCIE/apps/api run python /home/kotaromiyabi/SCIE/upload_to_hf.py
+
 
 
 

@@ -220,6 +220,22 @@ services:
       - ollama
 
 
+  # ─── OpenClaw Headless Scraper Worker (FB / IG / TikTok - Sulsel) ─────────
+  openclaw-worker:
+    build:
+      context: ./apps/openclaw-worker
+      dockerfile: Dockerfile
+    container_name: scie-openclaw-worker
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_STREAM_RAW_POSTS=stream:raw_posts
+    depends_on:
+      - redis
+    networks:
+      - scie-network
+
   # ─── Redis Commander (Dev UI) ───────────────────────────────────────────────
   redis-commander:
     image: rediscommander/redis-commander:latest
@@ -235,3 +251,4 @@ services:
       - scie-network
     profiles:
       - tools    # only start with: docker-compose --profile tools up
+
