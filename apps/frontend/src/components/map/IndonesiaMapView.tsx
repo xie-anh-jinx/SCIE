@@ -102,21 +102,25 @@ export default function IndonesiaMapView({ events, activeLayers, onSelectEvent }
 
           const marker = L.marker([evt.latitude, evt.longitude], { icon: customIcon });
 
+          const platformEmoji = evt.platform === 'tiktok' ? '🎵 TikTok' : evt.platform === 'twitter' ? '🐦 Twitter' : evt.platform === 'facebook' ? '📘 Facebook' : evt.platform === 'instagram' ? '📸 Instagram' : '📰 RSS News';
+
           const popupContent = `
             <div style="background-color: #030712; color: #f3f4f6; border-radius: 12px; padding: 12px; border: 1px solid #1f2937; max-width: 280px; font-family: sans-serif;">
-              <div style="display: flex; items-center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px;">
                 <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: ${color}; background-color: ${color}20; padding: 2px 6px; border-radius: 4px;">
                   ${evt.layer_category.toUpperCase()}
                 </span>
-                <span style="font-size: 10px; color: #6b7280;">${evt.province || 'Indonesia'}</span>
+                <span style="font-size: 10px; font-weight: 600; color: #a855f7; background-color: #a855f715; padding: 2px 6px; border-radius: 4px;">
+                  ${platformEmoji}
+                </span>
               </div>
               <div style="font-size: 12px; font-weight: 600; color: #ffffff; margin-bottom: 6px; line-height: 1.3;">
                 ${evt.title}
               </div>
               <div style="font-size: 11px; color: #9ca3af; margin-bottom: 8px;">
-                📍 ${evt.location_name}
+                📍 ${evt.location_name} • ${evt.province || 'Sulawesi Selatan'}
               </div>
-              <div style="display: flex; items-center; justify-content: space-between; font-size: 10px; border-top: 1px solid #1f2937; paddingTop: 6px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 10px; border-top: 1px solid #1f2937; padding-top: 6px;">
                 <span style="color: ${evt.sentiment_label === 'positive' ? '#10b981' : evt.sentiment_label === 'negative' ? '#ef4444' : '#9ca3af'}">
                   Sentimen: ${evt.sentiment_label}
                 </span>
@@ -124,6 +128,7 @@ export default function IndonesiaMapView({ events, activeLayers, onSelectEvent }
               </div>
             </div>
           `;
+
 
           marker.bindPopup(popupContent, {
             className: 'custom-leaflet-popup',
