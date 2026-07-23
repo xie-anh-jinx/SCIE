@@ -73,6 +73,7 @@ app.include_router(chat.router, prefix="/api/v1")
 app.include_router(alerts.router, prefix="/api/v1")
 app.include_router(reports.router, prefix="/api/v1")
 app.include_router(map.router, prefix="/api/v1")
+app.include_router(search.router, prefix="/api/v1")
 
 
 

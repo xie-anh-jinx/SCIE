@@ -9,8 +9,10 @@ export default function AlertsPage() {
   const { user, logout, isLoading } = useAuth();
   const router = useRouter();
 
+  const [province, setProvince] = useState('Sulawesi Selatan');
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dispatchStatus, setDispatchStatus] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -20,17 +22,37 @@ export default function AlertsPage() {
 
   useEffect(() => {
     if (user) {
-      alertsApi
-        .list()
-        .then((res) => setAlerts(res.alerts || []))
-        .finally(() => setLoading(false));
+      fetchAlerts(province);
     }
-  }, [user]);
+  }, [user, province]);
+
+  const fetchAlerts = async (targetProv: string) => {
+    setLoading(true);
+    try {
+      const res = await alertsApi.list(targetProv, 7);
+      setAlerts(res.alerts || []);
+    } catch (err) {
+      console.error('Failed to fetch alerts:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDispatch = async (alertId: string) => {
+    setDispatchStatus((prev) => ({ ...prev, [alertId]: 'SENDING...' }));
+    try {
+      const res = await alertsApi.dispatch(alertId);
+      setDispatchStatus((prev) => ({ ...prev, [alertId]: '✅ TERKIRIM KE TELEGRAM' }));
+    } catch (err) {
+      console.error('Failed to dispatch alert:', err);
+      setDispatchStatus((prev) => ({ ...prev, [alertId]: '❌ GAGAL' }));
+    }
+  };
 
   if (isLoading || !user) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <div className="text-gray-400 animate-pulse">Memuat...</div>
+        <div className="text-gray-400 animate-pulse font-mono text-sm">Menginisialisasi Alerts Engine...</div>
       </div>
     );
   }
@@ -38,39 +60,39 @@ export default function AlertsPage() {
   const severityBadge = (severity: string) => {
     switch (severity) {
       case 'HIGH':
-        return <span className="px-2.5 py-0.5 rounded text-xs bg-red-500/20 text-red-400 border border-red-500/30 font-bold">🔴 High Severity</span>;
+        return <span className="px-2.5 py-0.5 rounded text-xs bg-red-500/20 text-red-400 border border-red-500/30 font-bold">🔴 High Volatility</span>;
       case 'MEDIUM':
         return <span className="px-2.5 py-0.5 rounded text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 font-semibold">🟡 Medium</span>;
       default:
-        return <span className="px-2.5 py-0.5 rounded text-xs bg-blue-500/20 text-blue-400 border border-blue-500/30">🔵 Info</span>;
+        return <span className="px-2.5 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">🟢 Operational Info</span>;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-gray-950 flex">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-64 bg-gray-900 border-r border-gray-800 flex flex-col z-20">
+      <aside className="w-64 bg-gray-900 border-r border-gray-800 flex flex-col shrink-0">
         <div className="p-6 border-b border-gray-800">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-white font-bold">
               S
             </div>
             <div>
-              <div className="font-bold text-white text-sm">SCIE</div>
-              <div className="text-xs text-gray-500">Social Intelligence</div>
+              <div className="font-bold text-white text-sm">SCIE INDONESIA</div>
+              <div className="text-[10px] text-emerald-400 font-mono">National Command Center</div>
             </div>
           </div>
         </div>
 
         <nav className="flex-1 p-4 space-y-1">
           {[
-            { icon: '🏠', label: 'Dashboard', href: '/dashboard', active: false },
-            { icon: '📊', label: 'Analytics', href: '/analytics', active: false },
+            { icon: '🗺️', label: 'Situational Map', href: '/dashboard', active: false },
+            { icon: '📊', label: 'Analytics & Trends', href: '/analytics', active: false },
             { icon: '🕸️', label: 'Knowledge Graph', href: '/graph', active: false },
             { icon: '📡', label: 'Data Sources', href: '/sources', active: false },
-            { icon: '🔔', label: 'Alerts', href: '/alerts', active: true },
-            { icon: '🦙', label: 'AI Chat (Llama)', href: '/chat', active: false },
-            { icon: '📄', label: 'Reports', href: '/reports', active: false },
+            { icon: '🔔', label: 'Alerts & Anomalies', href: '/alerts', active: true },
+            { icon: '🦙', label: 'AI Intelligence (Llama)', href: '/chat', active: false },
+            { icon: '📄', label: 'Executive Reports', href: '/reports', active: false },
           ].map((item) => (
             <a
               key={item.href}
@@ -89,61 +111,87 @@ export default function AlertsPage() {
 
         <div className="p-4 border-t border-gray-800">
           <button onClick={logout} className="w-full text-xs text-gray-500 hover:text-red-400 py-1 text-left">
-            ← Keluar
+            ← Keluar ({user.username})
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 p-8 max-w-5xl">
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-2xl font-bold text-white">Alerts & Anomaly Detection</h1>
-            <span className="px-2 py-0.5 rounded-full text-xs bg-red-500/10 text-red-400 border border-red-500/20">
-              Real-time Alerting
-            </span>
-          </div>
-          <p className="text-gray-500 text-sm">
-            Notifikasi otomatis saat terjadi lonjakan volume percakapan, pergeseran sentimen, atau pergerakan aktor publik.
-          </p>
-        </div>
+      <main className="flex-1 flex flex-col min-w-0 bg-gray-950 p-8">
+        <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-gray-800">
+          <div>
+            <h1 className="text-2xl font-bold text-white tracking-wide">Peringatan Dini Anomali & Volatilitas (Phase 2)</h1>
+            <p className="text-xs text-gray-400 mt-1">
+              Deteksi Otomatis Lonjakan Virallitas (&gt;8.5), Pergeseran Sentimen Negatif, &amp; Isu Pilkada (7 Hari Terakhir)
 
-        {loading ? (
-          <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-28 bg-gray-900 border border-gray-800 rounded-xl animate-pulse" />
-            ))}
+            </p>
           </div>
-        ) : (
-          <div className="space-y-4">
-            {alerts.map((a) => (
+
+          <div className="flex items-center gap-3">
+            <select
+              value={province}
+              onChange={(e) => setProvince(e.target.value)}
+              className="px-3 py-2 bg-gray-900 border border-gray-800 text-white rounded-lg text-xs font-semibold focus:outline-none focus:border-violet-500 cursor-pointer"
+            >
+              <option value="Sulawesi Selatan">📍 Sulawesi Selatan (Makassar)</option>
+              <option value="DKI Jakarta">📍 DKI Jakarta</option>
+              <option value="Papua">📍 Papua</option>
+              <option value="Nasional">🇮🇩 Skala Nasional (38 Provinsi)</option>
+            </select>
+
+            <button
+              onClick={() => fetchAlerts(province)}
+              className="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg text-xs font-medium border border-gray-700"
+            >
+              🔄 Refresh Alerts
+            </button>
+          </div>
+        </header>
+
+        {/* Alert Cards Feed */}
+        <div className="mt-6 space-y-4 max-w-5xl">
+          {loading ? (
+            <div className="py-12 text-center text-xs text-gray-500 animate-pulse font-mono">
+              Memproses Anomaly Detection Engine...
+            </div>
+          ) : alerts.length === 0 ? (
+            <div className="py-12 text-center text-xs text-gray-500">
+              Tidak ada anomali berisiko tinggi ditemukan dalam 7 hari terakhir.
+            </div>
+          ) : (
+            alerts.map((a) => (
               <div
                 key={a.id}
-                className="p-5 bg-gray-900 border border-gray-800 rounded-xl hover:border-gray-700 transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                className="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:border-gray-700"
               >
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
+                <div className="space-y-1.5 flex-1">
+                  <div className="flex items-center gap-2">
                     {severityBadge(a.severity)}
-                    <span className="text-xs text-gray-500 font-mono">{a.type}</span>
+                    <span className="text-[10px] font-mono text-gray-500 uppercase">{a.type}</span>
+                    <span className="text-[10px] font-mono text-gray-500">
+                      • {new Date(a.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
                   </div>
-                  <h3 className="text-base font-semibold text-white">{a.title}</h3>
-                  <p className="text-sm text-gray-400">{a.description}</p>
+                  <h3 className="text-sm font-bold text-white">{a.title}</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed">{a.description}</p>
                 </div>
 
-                <div className="text-right shrink-0">
-                  <div className="text-xs text-gray-500 mb-2">
-                    {new Date(a.created_at).toLocaleString('id-ID')}
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                    a.status === 'ACTIVE' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-gray-800 text-gray-400'
-                  }`}>
-                    {a.status}
-                  </span>
+                <div className="flex items-center gap-3 shrink-0">
+                  {dispatchStatus[a.id] ? (
+                    <span className="text-xs font-mono font-bold text-emerald-400">{dispatchStatus[a.id]}</span>
+                  ) : (
+                    <button
+                      onClick={() => handleDispatch(a.id)}
+                      className="px-3.5 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-xs font-bold transition-all shadow-md flex items-center gap-1.5"
+                    >
+                      📱 Kirim ke Telegram Bot
+                    </button>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </main>
     </div>
   );

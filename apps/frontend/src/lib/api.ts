@@ -331,16 +331,24 @@ export interface AlertItem {
   severity: 'HIGH' | 'MEDIUM' | 'INFO';
   title: string;
   description: string;
+  location?: string;
+  province?: string;
   created_at: string;
   status: string;
 }
 
 export const alertsApi = {
-  list: async (): Promise<{ alerts: AlertItem[]; total_active: number }> => {
-    const res = await api.get<{ alerts: AlertItem[]; total_active: number }>('/alerts');
+  list: async (province: string = 'Sulawesi Selatan', days: number = 7): Promise<{ region: string; time_range: string; alerts: AlertItem[]; total_active: number }> => {
+    const res = await api.get<{ region: string; time_range: string; alerts: AlertItem[]; total_active: number }>('/alerts', { params: { province, days } });
+    return res.data;
+  },
+
+  dispatch: async (alertId: string): Promise<{ status: string; alert_id: string; destination: string }> => {
+    const res = await api.post<{ status: string; alert_id: string; destination: string }>('/alerts/dispatch', null, { params: { alert_id: alertId } });
     return res.data;
   },
 };
+
 
 // ─── Reports API ─────────────────────────────────────────────────────────────
 
