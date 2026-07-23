@@ -405,18 +405,21 @@ export interface MapSummaryData {
 }
 
 export const mapApi = {
-  getEvents: async (layers?: string, province?: string, limit: number = 250): Promise<{ total_events: number; events: MapEventItem[] }> => {
-    const params: Record<string, any> = { limit };
+  getEvents: async (layers?: string, province?: string, days: number = 7, limit: number = 250): Promise<{ time_range: string; total_events: number; events: MapEventItem[] }> => {
+    const params: Record<string, any> = { limit, days };
     if (layers) params.layers = layers;
     if (province) params.province = province;
-    const res = await api.get<{ total_events: number; events: MapEventItem[] }>('/map/events', { params });
+    const res = await api.get<{ time_range: string; total_events: number; events: MapEventItem[] }>('/map/events', { params });
     return res.data;
   },
-  getSummary: async (): Promise<MapSummaryData> => {
-    const res = await api.get<MapSummaryData>('/map/summary');
+  getSummary: async (province?: string, days: number = 7): Promise<MapSummaryData> => {
+    const params: Record<string, any> = { days };
+    if (province) params.province = province;
+    const res = await api.get<MapSummaryData>('/map/summary', { params });
     return res.data;
   },
 };
+
 
 export default api;
 

@@ -23,6 +23,7 @@ export default function DashboardPage() {
   const router = useRouter();
 
   const [selectedProvince, setSelectedProvince] = useState<string>('Sulawesi Selatan');
+  const [days, setDays] = useState<number>(7);
   const [activeLayers, setActiveLayers] = useState<string[]>([
     'konflik', 'hotspot', 'pangkalan', 'infrastruktur', 'ekonomi', 'perairan', 'bencana'
   ]);
@@ -39,16 +40,16 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (user) {
-      fetchMapData(selectedProvince);
+      fetchMapData(selectedProvince, days);
     }
-  }, [user, selectedProvince]);
+  }, [user, selectedProvince, days]);
 
-  const fetchMapData = async (prov?: string) => {
+  const fetchMapData = async (prov?: string, dayCount: number = 7) => {
     setLoading(true);
     try {
       const [eventsRes, summaryRes] = await Promise.all([
-        mapApi.getEvents(undefined, prov || undefined),
-        mapApi.getSummary(),
+        mapApi.getEvents(undefined, prov || undefined, dayCount),
+        mapApi.getSummary(prov || undefined, dayCount),
       ]);
       setEvents(eventsRes.events || []);
       setSummary(summaryRes);
@@ -58,6 +59,7 @@ export default function DashboardPage() {
       setLoading(false);
     }
   };
+
 
 
   const handleToggleLayer = (layerId: string) => {
@@ -156,12 +158,25 @@ export default function DashboardPage() {
               <option value="Kalimantan Timur">📍 Kalimantan Timur (IKN)</option>
             </select>
 
+            <select
+              value={days}
+              onChange={(e) => setDays(Number(e.target.value))}
+              className="px-3 py-1.5 bg-gray-800 border border-gray-700 text-white rounded-lg text-xs font-semibold focus:outline-none focus:border-violet-500 cursor-pointer"
+            >
+
+              <option value={7}>📅 1 Minggu Terakhir (7 Hari)</option>
+              <option value={3}>⏱️ 3 Hari Terakhir</option>
+              <option value={1}>⚡ 24 Jam Terakhir</option>
+              <option value={14}>🗓️ 2 Minggu Terakhir (14 Hari)</option>
+            </select>
+
             <button
-              onClick={() => fetchMapData(selectedProvince)}
+              onClick={() => fetchMapData(selectedProvince, days)}
               className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded-lg text-xs font-medium transition-colors border border-gray-700 flex items-center gap-1.5"
             >
               🔄 Refresh Feeds
             </button>
+
           </div>
         </header>
 
