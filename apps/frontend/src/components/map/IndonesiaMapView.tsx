@@ -58,9 +58,10 @@ export default function IndonesiaMapView({ events, activeLayers, onSelectEvent }
           minZoom: 4,
           maxZoom: 14,
           maxBounds: [
-            [-13.0, 92.0],  # South-West bound
-            [9.0, 142.0],   # North-East bound
+            [-13.0, 92.0], // South-West bound
+            [9.0, 142.0],  // North-East bound
           ],
+
         });
 
         // Dark Matter Tile Layer (CartoDB)
@@ -124,9 +125,9 @@ export default function IndonesiaMapView({ events, activeLayers, onSelectEvent }
           `;
 
           marker.bindPopup(popupContent, {
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
+            className: 'custom-leaflet-popup',
           });
+
 
           marker.on('click', () => {
             if (onSelectEvent) onSelectEvent(evt);
