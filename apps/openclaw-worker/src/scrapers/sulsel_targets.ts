@@ -1,4 +1,21 @@
+export const SULSEL_POLITICAL_KEYWORDS = [
+  'pilkada sulsel',
+  'pilwalkot makassar',
+  'gubernur sulsel',
+  'dprd sulsel',
+  'dprd makassar',
+  'pemprov sulsel',
+  'bawaslu sulsel',
+  'kpu sulsel',
+  'kebijakan gubernur',
+  'paslon gubernur sulsel',
+  'partai politik makassar',
+  'kampanye pilkada',
+  'isu politik makassar',
+];
+
 export const SULSEL_TARGET_KEYWORDS = [
+  ...SULSEL_POLITICAL_KEYWORDS,
   'makassar',
   'sulawesi selatan',
   'gowa',
@@ -7,12 +24,9 @@ export const SULSEL_TARGET_KEYWORDS = [
   'palopo',
   'bone',
   'selayar',
-  'pantai losari',
   'kodam XIV hasanuddin',
   'polrestabes makassar',
   'bmkg makassar',
-  'pelabuhan makassar',
-  'pasar terong makassar',
 ];
 
 export const SULSEL_LOCATION_MAPPINGS: Record<string, { lat: number; lon: number; name: string }> = {
